@@ -74,12 +74,13 @@ function hadleWeather(req, res) {// req,res are var
         let weather = req.query.city;//query par from city يعني من اللينك وين بدي اروح :()/amman or /seattle 
         let jsonData = require('./data/weather.json');
         let jsonOjbW = jsonData.data;
+        let weatherArray=[];
         jsonOjbW.forEach(element => {
             let toDate= element.datetime;
             let temp=new Date(toDate).split('');
             temp=new Date(temp[0],temp[1],temp[2])
             let weatherObjCons = new Weather( element.weather.description, temp);//from file name is weather.json
-
+            weatherArray.push(weatherObjCons);
         });
         res.status(200).json(weatherObjCons);//converting to json and sent it 
     }
