@@ -9,29 +9,29 @@ app.use(cors());//allow all devices acess to my server
 
 const PORT = process.env.PORT;
 
-// function hadleLocation(request, response) {// req,res are var
-//     let key = process.env.GEOCODE_API_KEY;
-//     let city = request.query.city;//query par from city يعني من اللينك وين بدي اروح :()/amman or /seattle 
-//     superagent.get(`http://eu1.locationiq.com/v1/search.php?key=${key}&q=${city}&format=json`)
-//         .then((data) => {
-//             let jsonOjb = data.body[0];
-//             console.log(jsonOjb);
-//             // let jsonData = require('./data/location.json');//file 
-//             let locationObjCons = new Location(city, jsonOjb.display_name, jsonOjb.lat, jsonOjb.lon);//from file name is location.json
-//             response.status(200).json(locationObjCons);//converting to json and sent it 
+function hadleLocation(request, response) {// req,res are var
+    let key = process.env.GEOCODE_API_KEY;
+    let city = request.query.city;//query par from city يعني من اللينك وين بدي اروح :()/amman or /seattle 
+    superagent.get(`http://eu1.locationiq.com/v1/search.php?key=${key}&q=${city}&format=json`)
+        .then((data) => {
+            let jsonOjb = data.body[0];
+            console.log(jsonOjb);
+            // let jsonData = require('./data/location.json');//file 
+            let locationObjCons = new Location(city, jsonOjb.display_name, jsonOjb.lat, jsonOjb.lon);//from file name is location.json
+            response.status(200).json(locationObjCons);//converting to json and sent it 
 
-//         }).catch(() => {
-//             response.status(200).send('Sorry, something went wrong');
-//         });
-// }
+        }).catch(() => {
+            response.status(200).send('Sorry, something went wrong');
+        });
+}
 
-// // location constr
-// function Location(search_query, formatted_query, latitude, longitude) {
-//     this.search_query = search_query;
-//     this.formatted_query = formatted_query;
-//     this.latitude = latitude;
-//     this.longitude = longitude;
-// }
+// location constr
+function Location(search_query, formatted_query, latitude, longitude) {
+    this.search_query = search_query;
+    this.formatted_query = formatted_query;
+    this.latitude = latitude;
+    this.longitude = longitude;
+}
 
 app.listen(PORT, () => {
     console.log(`app is listening  to  ${PORT}`);
