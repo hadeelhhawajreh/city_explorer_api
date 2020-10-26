@@ -8,17 +8,17 @@ require('dotenv').config();
 
 app.get('/location', hadleLocation);//calling function withut ()
 
-function hadleLocation(req, res) {// req,res are var
+function hadleLocation(request, response) {// req,res are var
     try {
-        let city = req.query.city;//query par from city يعني من اللينك وين بدي اروح :()/amman or /seattle 
-        let jsonData = require('./data/location.json');
+        let city = request.query.city;//query par from city يعني من اللينك وين بدي اروح :()/amman or /seattle 
+        let jsonData = require('./data/location.json');//file 
         let jsonOjb = jsonData[0];
-        let locationObjCons = new Location(city, jsonOjb.d, jsonOjb.display_name, jsonOjb.let, jsonOjb.lon);//from file name is location.json
-        res.status(200).json(locationObjCons);//converting to json and sent it 
+        let locationObjCons = new Location(city, jsonOjb.display_name, jsonOjb.let, jsonOjb.lon);//from file name is location.json
+        response.status(200).json(locationObjCons);//converting to json and sent it 
     }
 }
 catch (error) {
-    res.status(500).send('Sorry, something went wrong');
+    response.status(500).send('Sorry, something went wrong');
 }
 
 // location constr
