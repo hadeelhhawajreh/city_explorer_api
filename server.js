@@ -87,7 +87,7 @@ function hadleWeather(req, res) {// req,res are var
             let weatherObjCons = new Weather( element.weather.description, temp);//from file name is weather.json
             weatherArray.push(weatherObjCons);
         });
-        res.status(200).json(weatherObjCons);//converting to json and sent it 
+        res.status(200).json(weatherArray);//converting to json and sent it 
     }
     
     catch (error) {
