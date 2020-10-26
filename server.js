@@ -7,20 +7,21 @@ app.use(cors());//allow all devices acess to my server
 require('dotenv').config();
 
 app.get('/location', hadleLocation);//calling function withut ()
+const PORT = process.env.PORT;
 
 function hadleLocation(request, response) {// req,res are var
     try {
         let city = request.query.city;//query par from city يعني من اللينك وين بدي اروح :()/amman or /seattle 
         let jsonData = require('./data/location.json');//file 
         let jsonOjb = jsonData[0];
-
         let locationObjCons = new Location(city, jsonOjb.display_name, jsonOjb.lat, jsonOjb.lon);//from file name is location.json
         response.status(200).json(locationObjCons);//converting to json and sent it 
-    }
-}
-catch (error) {
+  
+
+
+}catch (error) {
     response.status(500).send('Sorry, something went wrong');
-}
+}}
 
 // location constr
 function Location(search_query, formatted_query, latitude, longitude) {
@@ -29,6 +30,13 @@ function Location(search_query, formatted_query, latitude, longitude) {
     this.latitude = latitude;
     this.longitude = longitude;
 }
+
+
+
+app.listen(PORT, () => {
+    console.log(`app is listening  to  ${PORT}`);
+})
+
 
 // Weather constr
 
@@ -39,10 +47,6 @@ function Location(search_query, formatted_query, latitude, longitude) {
 //     "latitude": "47.606210",
 //     "longitude": "-122.332071"
 //   }
-const PORT = process.env.PORT;
-app.listen(PORT, () => {
-    console.log(`app is listening  to  ${PORT}`);
-})
 
 //////////////////////
 // [
