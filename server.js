@@ -70,3 +70,48 @@ function handleWeather(req, res) {// req,res are var
         res.send('Sorry, something went wrong');
     });
 }
+
+
+app.get('/trails',handleTrail);
+
+function Trail(trailObj){
+    this.name=trailObj.name;
+    this.location=trailObj.location;
+    this.length=trailObj.length;
+    this.stars=trailObj.stars;
+    this.star_votes=trailObj.star_votes;
+    this.summary=trailObj.summary;
+    this.trail_url=trailObj.trail_url;
+    this.conditions=trailObj.conditions;
+    this.condition_date=trailObj.conditionDate.toString().slice(0,10);;
+    this.condition_time=trailObj.conditionDate.toString().slice(11,20);
+}
+
+
+function handleTrail(req,res){
+    let key = process.env.TRAIL_API_KEY;
+    let lato=req.query.latitude;
+    let long=req.query.longitude;
+    superagent.get(`https://www.hikingproject.com/data/get-trails?lat=${lato}&lon=${long}&key=${key}`)
+    .then(data => {
+        let trailsdata = data.body.trails;
+        let value=trailsdata.map(element=>{
+            return new Trail(element);
+        });
+        res.status(200).send(value);//converting to json and send it 
+
+    }).catch(() => {
+        res.send('Sorry, something went wrong');
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
