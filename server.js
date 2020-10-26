@@ -65,7 +65,7 @@ function handleWeather(req, res) {// req,res are var
             weatherArray.push(weatherObjCons);
             console.log(weatherArray);
         });
-        res.status(200).json(weatherArray);//converting to json and sent it 
+        res.status(200).send(weatherArray);//converting to json and sent it 
     }).catch(() => {
         res.send('Sorry, something went wrong');
     });
