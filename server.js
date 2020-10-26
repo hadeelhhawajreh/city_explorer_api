@@ -5,7 +5,7 @@ const cors = require('cors');
 const superagent = require('superagent');
 let app = express();
 app.use(cors());//allow all devices acess to my server 
-// app.get('/location', hadleLocation);//calling function withut ()
+app.get('/location', hadleLocation);//calling function withut ()
 
 const PORT = process.env.PORT;
 
