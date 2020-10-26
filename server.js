@@ -13,7 +13,8 @@ function hadleLocation(request, response) {// req,res are var
         let city = request.query.city;//query par from city يعني من اللينك وين بدي اروح :()/amman or /seattle 
         let jsonData = require('./data/location.json');//file 
         let jsonOjb = jsonData[0];
-        let locationObjCons = new Location(city, jsonOjb.display_name, jsonOjb.let, jsonOjb.lon);//from file name is location.json
+
+        let locationObjCons = new Location(city, jsonOjb.display_name, jsonOjb.lat, jsonOjb.lon);//from file name is location.json
         response.status(200).json(locationObjCons);//converting to json and sent it 
     }
 }
