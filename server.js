@@ -33,10 +33,6 @@ function Location(search_query, formatted_query, latitude, longitude) {
     this.longitude = longitude;
 }
 
-app.listen(PORT, () => {
-    console.log(`app is listening  to  ${PORT}`);
-})
-
 
 // Weather constr
 
@@ -49,7 +45,7 @@ function Weather(forecast, time) {
 }
 function handleWeather(req, res) {// req,res are var
     let key = process.env.WEATHER_API_KEY;
-    let city = req.query.city;//query par from city يعني من اللينك وين بدي اروح :()/amman or /seattle 
+    let city = req.query.search_query;//query par from city يعني من اللينك وين بدي اروح :()/amman or /seattle 
     // let jsonData = require('./data/weather.json');//from where to get it 
     superagent.get(`https://api.weatherbit.io/v2.0/forecast/daily?city=${city}&key=${key}`)
     .then(data => {
@@ -63,7 +59,6 @@ function handleWeather(req, res) {// req,res are var
             let dateFormatted = today.toDateString("en-US", options);
             let weatherObjCons = new Weather(element.weather.description, dateFormatted);//from file name is weather.json
             weatherArray.push(weatherObjCons);
-            console.log(weatherArray);
         });
         res.status(200).send(weatherArray);//converting to json and sent it 
     }).catch(() => {
@@ -79,39 +74,46 @@ function Trail(trailObj){
     this.location=trailObj.location;
     this.length=trailObj.length;
     this.stars=trailObj.stars;
-    this.star_votes=trailObj.star_votes;
+    this.star_votes=trailObj.starVotes;
     this.summary=trailObj.summary;
-    this.trail_url=trailObj.trail_url;
-    this.conditions=trailObj.conditions;
-    this.condition_date=trailObj.conditionDate.toString().slice(0,10);;
-    this.condition_time=trailObj.conditionDate.toString().slice(11,20);
+    this.trail_url=trailObj.url;
+    this.conditions=trailObj.conditionStatus;
+    this.condition_date=trailObj.conditionDate.slice(0,10);;
+    this.condition_time=trailObj.conditionDate.slice(11);
 }
-
+// "name": "Rattlesnake Ledge",
+// "location": "Riverbend, Washington",
+// "length": "4.3",
+// "stars": "4.4",
+// "star_votes": "84",
+// "summary": "An extremely popular out-and-back hike to the viewpoint on Rattlesnake Ledge.",
+// "trail_url": "https://www.hikingproject.com/trail/7021679/rattlesnake-ledge",
+// "conditions": "Dry: The trail is clearly marked and well maintained.",
+// "condition_date": "2018-07-21",
+// "condition_time": "0:00:00 "
+// },
 
 function handleTrail(req,res){
     let key = process.env.TRAIL_API_KEY;
     let lato=req.query.latitude;
     let long=req.query.longitude;
-    superagent.get(`https://www.hikingproject.com/data/get-trails?lat=${lato}&lon=${long}&key=${key}`)
+    superagent.get(`https://www.hikingproject.com/data/get-trails?lat=${lato}&lon=${long}&maxDistance=200&key=${key}`)
     .then(data => {
         let trailsdata = data.body.trails;
+       
         let value=trailsdata.map(element=>{
             return new Trail(element);
         });
-        res.status(200).send(value);//converting to json and send it 
-
+        console.log(value);
+        res.status(200).json(value);//converting to json and send it 
     }).catch(() => {
-        res.send('Sorry, something went wrong');
+        res.status(500).send('Sorry, something went wrong');
     });
 }
 
 
-
-
-
-
-
-
-
+app.listen(PORT, () => {
+    console.log(`app is listening  to  ${PORT}`);
+})
 
 
